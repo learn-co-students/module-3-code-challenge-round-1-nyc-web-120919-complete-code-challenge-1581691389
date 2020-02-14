@@ -90,8 +90,15 @@ console.log(image, 'renderimagesection');
 
     const comments = document.querySelector('#comments');
     const commentLi = document.createElement('li');
+    commentLi.dataset.id = newComment.id;
+    console.log(e.target)
+
     comments.append(commentLi);
-    commentLi.innerText = newComment;
+    // commentLi.innerText = newComment;
+    commentLi.innerHTML = `
+    ${newComment}
+    <button class='delete_button' data-id=>delete</button>
+    `;
     console.log(newComment, 'target')
 
     fetch(`${commentsURL}`, {
@@ -121,26 +128,39 @@ form.reset();
       comment.remove();
       console.log(commentId, 'yes delete it')
 
+
+
       // fetch(`https://randopic.herokuapp.com/comments/${commentId}`, {
       //   method: 'DELETE',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({message: 'Comment Successfully Destroyed'}) // body data type must match "Content-Type" header
       // })
+      // .then(res => res.text()) // or res.json()
 
 
 
-      fetch(`https://randopic.herokuapp.com/comments/${commentId}`, {
-        method: 'DELETE',
-      })
-      .then(res => res.text()) // or res.json()
-      // .then(res => console.log(res))
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data) // body data type must match "Content-Type" header
-      // });
+    //   fetch(`https://randopic.herokuapp.com/comments/${commentId}`, {
+    //     method: 'DELETE',
+    //   })
+    // .then(res => {
+    //     if (res.ok) {
+    //         return Promise.resolve('User deleted.');
+    //     } else {
+    //         return Promise.reject('An error occurred.');
+    //     }
+    // })
+    // .then(res => console.log(res));
+
+    fetch(`https://randopic.herokuapp.com/comments/${commentId}`, {
+  method: 'DELETE', 
+  headers: new Headers({
+		'Content-Type': 'text/plain'
+	})})
+  .then(function() { message: 'Comment Successfully Destroyed' });
+
+
+
+
+
+
 
     }
 

@@ -44,8 +44,13 @@ console.log(image, 'renderimagesection');
     // console.log(comments)
     image.comments.forEach(comment => {
       const commentLi = document.createElement('li');
+      commentLi.dataset.id = comment.id;
+      commentLi.className = 'commentLi';
       comments.append(commentLi);
-      commentLi.innerText = comment.content;
+      commentLi.innerHTML = `
+      ${comment.content}
+      <button class='delete_button' data-id=${comment.id}>delete</button>
+      `;
       // console.log(comment.content);
     })
 
@@ -105,6 +110,43 @@ form.reset();
 
 
   }); //form
+
+  const commentsUl = document.querySelector('#comments');
+  commentsUl.addEventListener('click', e => {
+
+    if(e.target.className === 'delete_button') {
+
+      const commentId = e.target.dataset.id;
+      const comment = e.target.parentNode
+      comment.remove();
+      console.log(commentId, 'yes delete it')
+
+      // fetch(`https://randopic.herokuapp.com/comments/${commentId}`, {
+      //   method: 'DELETE',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({message: 'Comment Successfully Destroyed'}) // body data type must match "Content-Type" header
+      // })
+
+
+
+      fetch(`https://randopic.herokuapp.com/comments/${commentId}`, {
+        method: 'DELETE',
+      })
+      .then(res => res.text()) // or res.json()
+      // .then(res => console.log(res))
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(data) // body data type must match "Content-Type" header
+      // });
+
+    }
+
+
+  })
+
 
 
   // comment_form
